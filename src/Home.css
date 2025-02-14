@@ -1,0 +1,61 @@
+/* Home Page Styling */
+.home-container {
+    text-align: center;
+    padding: 40px 20px;
+  }
+  
+  /* Image Styling */
+  .image-container {
+    margin: 20px auto;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .image-container img {
+    width: 80%;
+    max-width: 800px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Button Styling */
+  .button-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  .button-card {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    width: 250px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .button-card h3 {
+    font-size: 24px;
+    margin-bottom: 15px;
+  }
+  
+  .button-card p {
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+  
+  .btn {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .btn:hover {
+    background-color: #0056b3;
+  }
+  
