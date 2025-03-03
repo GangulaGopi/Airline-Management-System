@@ -1,24 +1,73 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-function Login() {
+const Login = ({ setAuth }) => {
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  });
+
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const storedUser = localStorage.getItem(formData.email);
+
+    if (!storedUser) {
+      setError('User does not exist. Please sign up.');
+      return;
+    }
+
+    const userData = JSON.parse(storedUser);
+
+    if (userData.password !== formData.password) {
+      setError('Invalid credentials. Please try again.');
+      return;
+    }
+
+    // Save authentication status
+    localStorage.setItem("isAuthenticated", "true");
+    setAuth(true);
+    setLoading(true);
+
+    // Display "Loading..." message for 5 seconds before redirecting
+    setTimeout(() => {
+      navigate('/');
+    }, 5000);
+  };
 
   return (
     <div className="auth-container">
       <h2>Login</h2>
-      <input type="text" placeholder="Username" />
-      <input type="password" placeholder="Password" />
-      <button className="auth-btn">Login</button>
-      <p>Don't have an account? <button onClick={() => navigate("/signup")}>Sign Up</button></p>
+      {error && <p className="error">{error}</p>}
+      {loading ? <p>Logging in... Redirecting to home in 5 seconds...</p> : (
+        <form onSubmit={handleSubmit}>
+          <div className="input-group">
+            <label>Email:</label>
+            <input type="email" name="email" value={formData.email} onChange={handleChange} required />
+          </div>
 
-      <style jsx>{`
-        .auth-container { text-align: center; margin-top: 50px; }
-        input { display: block; margin: 10px auto; padding: 10px; width: 80%; max-width: 300px; }
-        .auth-btn { padding: 10px 20px; background-color: #007bff; color: white; border: none; cursor: pointer; }
-      `}</style>
+          <div className="input-group">
+            <label>Password:</label>
+            <input type="password" name="password" value={formData.password} onChange={handleChange} required />
+          </div>
+
+          <button type="submit" className="btn">Login</button>
+        </form>
+      )}
+      <p>Don't have an account? <a href="/signup">Sign up here</a></p>
     </div>
   );
-}
+};
 
 export default Login;

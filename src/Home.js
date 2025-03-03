@@ -1,6 +1,5 @@
 import React from 'react';
 import './Home.css'; // Ensure this file exists
-
 function Home() {
   return (
     <div className="home-container">
@@ -9,7 +8,7 @@ function Home() {
 
       {/* Image Section */}
       <div className="image-container">
-        <img src="public\banner.jpg" alt="Airline Management" />
+        <img src="../Assets/airline.jpg" alt="Airline Management" />
       </div>
 
       {/* Buttons Section */}

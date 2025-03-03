@@ -1,11 +1,31 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
 import './App.css';
 import Home from './Home';
 import Login from './Login';
 import SignUp from './SignUp';
+import Profile from './Profile';
+import Footer from './Footer';
 
 function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  // Check authentication status when app loads
+  useEffect(() => {
+    const authStatus = localStorage.getItem("isAuthenticated");
+    setIsAuthenticated(authStatus === "true");
+  }, []);
+
+  const handleLogin = () => {
+    localStorage.setItem("isAuthenticated", "true");
+    setIsAuthenticated(true);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("isAuthenticated");
+    setIsAuthenticated(false);
+  };
+
   return (
     <Router>
       <div className="app-container">
@@ -13,42 +33,33 @@ function App() {
         <header className="header">
           <h1>Airline Management</h1>
           <div className="auth-buttons">
-            <Link to="/">
-              <button className="btn home-btn">Home</button>
-            </Link>
-            <Link to="/login">
-              <button className="btn">Login</button>
-            </Link>
-            <Link to="/signup">
-              <button className="btn signup-btn">Sign Up</button>
-            </Link>
+            {isAuthenticated ? (
+              <>
+                <Link to="/"><button className="btn home-btn">Home</button></Link>
+                <Link to="/profile"><button className="btn">My Profile</button></Link>
+                <button className="btn logout-btn" onClick={handleLogout}>Logout</button>
+              </>
+            ) : (
+              <>
+                <Link to="/login"><button className="btn">Login</button></Link>
+                <Link to="/signup"><button className="btn signup-btn">Sign Up</button></Link>
+              </>
+            )}
           </div>
         </header>
 
         {/* Main Content */}
         <main className="main-content">
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<SignUp />} />
+            <Route path="/" element={isAuthenticated ? <Home /> : <Navigate to="/login" />} />
+            <Route path="/login" element={<Login setAuth={setIsAuthenticated} />} />
+            <Route path="/signup" element={<SignUp setAuth={setIsAuthenticated} />} />
+            <Route path="/profile" element={isAuthenticated ? <Profile /> : <Navigate to="/login" />} />
           </Routes>
         </main>
 
         {/* Footer */}
-        <footer className="footer">
-          <p>&copy; 2025 Airline Management. All Rights Reserved.</p>
-          <div className="social-links">
-            <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer">
-              <img src="/images/linkedin.png" alt="LinkedIn" />
-            </a>
-            <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
-              <img src="/images/facebook.png" alt="Facebook" />
-            </a>
-            <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
-              <img src="/images/instagram.png" alt="Instagram" />
-            </a>
-          </div>
-        </footer>
+        <Footer />
       </div>
     </Router>
   );

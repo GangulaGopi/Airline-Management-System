@@ -34,8 +34,8 @@ function Footer() {
         {activeSection === 'contact' && (
           <div>
             <h2>Contact Us</h2>
-            <p>Email: support@airline.com</p>
-            <p>Phone: +123 456 7890</p>
+            <p>Email: <a href="mailto:support@airline.com">support@airline.com</a></p>
+            <p>Phone: <a href="tel:+1234567890">+123 456 7890</a></p>
             <p>Address: 123 Airline Street, Aviation City, USA</p>
           </div>
         )}
@@ -56,10 +56,12 @@ function Footer() {
       </div>
 
       {/* Copyright & Social Media Links */}
-      <p>&copy; 2025 Airline Management. All Rights Reserved.</p>
-      <div className="social-links">
-        <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-        <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">Instagram</a>
+      <div className="footer-bottom">
+        <p>&copy; 2025 Airline Management. All Rights Reserved.</p>
+        <div className="social-links">
+          <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">Instagram</a>
+        </div>
       </div>
     </footer>
   );
