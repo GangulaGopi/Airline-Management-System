@@ -13,7 +13,7 @@ const SignUp = ({ setAuth }) => {
     gender: "",
     dob: "",
     country: "",
-    phone: "+91", // Default country code for India
+    phone: "+91",
   });
 
   const [passwordError, setPasswordError] = useState("");
@@ -22,7 +22,6 @@ const SignUp = ({ setAuth }) => {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-    // Validate password strength
     if (e.target.name === "password") {
       const strongPasswordRegex =
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
@@ -35,7 +34,7 @@ const SignUp = ({ setAuth }) => {
   };
 
   const nextStep = () => {
-    if (step === 1 && passwordError) return; // Prevent proceeding if password is weak
+    if (step === 1 && passwordError) return;
     if (step < 3) setStep(step + 1);
   };
 
@@ -48,7 +47,6 @@ const SignUp = ({ setAuth }) => {
       return;
     }
 
-    // Save user data to local storage
     localStorage.setItem("user", JSON.stringify(formData));
     localStorage.setItem("isAuthenticated", "true");
 
@@ -56,7 +54,7 @@ const SignUp = ({ setAuth }) => {
       setAuth(true);
     }
 
-    navigate("/");
+    navigate("/login");
   };
 
   return (
