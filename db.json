@@ -1,0 +1,16 @@
+{
+  "users": [
+    {
+      "id": "9da1",
+      "username": "gopi",
+      "email": "gopigangula2004@gmail.com",
+      "password": "Gopi@1350",
+      "confirmPassword": "Gopi@1350",
+      "fullName": "Gopi Gangula",
+      "gender": "Male",
+      "dob": "2010-03-04",
+      "country": "India",
+      "phone": "+91 7989721034"
+    }
+  ]
+}

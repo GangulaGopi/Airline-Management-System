@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import "./SignUp.css";
 
 const SignUp = ({ setAuth }) => {
@@ -17,6 +18,7 @@ const SignUp = ({ setAuth }) => {
   });
 
   const [passwordError, setPasswordError] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -42,24 +44,36 @@ const SignUp = ({ setAuth }) => {
     if (step > 1) setStep(step - 1);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (formData.password !== formData.confirmPassword) {
+      setError("Passwords do not match!");
       return;
     }
 
-    localStorage.setItem("user", JSON.stringify(formData));
-    localStorage.setItem("isAuthenticated", "true");
+    try {
+      // Check if email already exists
+      const { data } = await axios.get("http://localhost:3001/users");
+      const userExists = data.some((user) => user.email === formData.email);
 
-    if (typeof setAuth === "function") {
-      setAuth(true);
+      if (userExists) {
+        setError("User already exists with this email.");
+        return;
+      }
+
+      // Save user to db.json
+      await axios.post("http://localhost:3001/users", formData);
+
+      navigate("/login");
+    } catch (err) {
+      setError("Error registering user. Try again.");
     }
-
-    navigate("/login");
   };
 
   return (
     <div className="signup-container">
       <h2>Sign Up - Step {step} of 3</h2>
+
+      {error && <p className="error">{error}</p>}
 
       {step === 1 && (
         <div className="step">
