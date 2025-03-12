@@ -23,7 +23,7 @@ const Login = ({ setAuth }) => {
     e.preventDefault();
 
     try {
-      const { data } = await axios.get("http://localhost:3001/users");
+      const { data } = await axios.get("https://project-server-0j61.onrender.com/users");
       const user = data.find((u) => u.email === formData.email);
 
       if (!user) {

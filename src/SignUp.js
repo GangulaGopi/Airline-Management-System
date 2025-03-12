@@ -77,7 +77,7 @@ const SignUp = ({ setAuth }) => {
     if (!validateStep()) return;
 
     try {
-      const { data } = await axios.get("http://localhost:3001/users");
+      const { data } = await axios.get("https://project-server-0j61.onrender.com/users");
       const userExists = data.some((user) => user.email === formData.email);
 
       if (userExists) {
@@ -85,7 +85,7 @@ const SignUp = ({ setAuth }) => {
         return;
       }
 
-      await axios.post("http://localhost:3001/users", formData);
+      await axios.post("https://project-server-0j61.onrender.com/users", formData);
       alert("Registration Successful!");
       navigate("/login");
     } catch (err) {
