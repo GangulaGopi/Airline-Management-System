@@ -11,6 +11,31 @@
       "dob": "2010-03-04",
       "country": "India",
       "phone": "+91 7989721034"
+    },
+    {
+      "id": "73b1",
+      "username": "abhi",
+      "email": "2211cs030025@mallareddyuniversity.ac.in",
+      "password": "Aa@123123",
+      "confirmPassword": "Aa@123123",
+      "fullName": "Abhii",
+      "gender": "Male",
+      "dob": "2025-02-25",
+      "country": "",
+      "phone": "+91 7989721034",
+      "profilePic": ""
+    },
+    {
+      "id": "f383",
+      "username": "Karthik",
+      "email": "2211cs030020@mallareddyuniversity.ac.in",
+      "password": "Gopi@1350",
+      "confirmPassword": "Gopi@1350",
+      "fullName": "karthik",
+      "gender": "Male",
+      "dob": "2025-03-05",
+      "country": "India",
+      "phone": "+91 7989721034"
     }
   ]
 }

@@ -14,7 +14,7 @@ const SignUp = ({ setAuth }) => {
     gender: "",
     dob: "",
     country: "",
-    phone: "+91",
+    phone: "",
   });
 
   const [passwordError, setPasswordError] = useState("");
@@ -22,36 +22,61 @@ const SignUp = ({ setAuth }) => {
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
 
-    if (e.target.name === "password") {
+    if (name === "password") {
       const strongPasswordRegex =
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
       setPasswordError(
-        strongPasswordRegex.test(e.target.value)
+        strongPasswordRegex.test(value)
           ? ""
           : "Password must be at least 8 characters, include one uppercase, one lowercase, one number, and one special character."
       );
     }
   };
 
-  const nextStep = () => {
-    if (step === 1 && passwordError) return;
-    if (step < 3) setStep(step + 1);
+  const validateStep = () => {
+    const { username, email, password, confirmPassword, fullName, gender, dob, country, phone } = formData;
+
+    if (step === 1) {
+      if (!username || !email || !password || !confirmPassword) {
+        setError("All fields are required.");
+        return false;
+      }
+      if (passwordError) {
+        setError("Please enter a strong password.");
+        return false;
+      }
+      if (password !== confirmPassword) {
+        setError("Passwords do not match.");
+        return false;
+      }
+    } else if (step === 2) {
+      if (!fullName || !gender || !dob) {
+        setError("All fields are required.");
+        return false;
+      }
+    } else if (step === 3) {
+      if (!country || !phone) {
+        setError("All fields are required.");
+        return false;
+      }
+    }
+    setError("");
+    return true;
   };
 
-  const prevStep = () => {
-    if (step > 1) setStep(step - 1);
+  const nextStep = () => {
+    if (validateStep()) setStep((prev) => prev + 1);
   };
+
+  const prevStep = () => setStep((prev) => prev - 1);
 
   const handleSubmit = async () => {
-    if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match!");
-      return;
-    }
+    if (!validateStep()) return;
 
     try {
-      // Check if email already exists
       const { data } = await axios.get("http://localhost:3001/users");
       const userExists = data.some((user) => user.email === formData.email);
 
@@ -60,9 +85,8 @@ const SignUp = ({ setAuth }) => {
         return;
       }
 
-      // Save user to db.json
       await axios.post("http://localhost:3001/users", formData);
-
+      alert("Registration Successful!");
       navigate("/login");
     } catch (err) {
       setError("Error registering user. Try again.");
@@ -98,12 +122,31 @@ const SignUp = ({ setAuth }) => {
           <input type="text" name="fullName" value={formData.fullName} onChange={handleChange} required />
 
           <label>Gender:</label>
-          <select name="gender" value={formData.gender} onChange={handleChange} required>
-            <option value="">Select Gender</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Other">Other</option>
-          </select>
+          <div className="gender-options">
+            <label>
+              <input
+                type="radio"
+                name="gender"
+                value="Male"
+                checked={formData.gender === "Male"}
+                onChange={handleChange}
+                required
+              />
+              Male
+            </label>
+
+            <label>
+              <input
+                type="radio"
+                name="gender"
+                value="Female"
+                checked={formData.gender === "Female"}
+                onChange={handleChange}
+                required
+              />
+              Female
+            </label>
+          </div>
 
           <label>Date of Birth:</label>
           <input type="date" name="dob" value={formData.dob} onChange={handleChange} required />
@@ -115,15 +158,15 @@ const SignUp = ({ setAuth }) => {
           <label>Country:</label>
           <select name="country" value={formData.country} onChange={handleChange} required>
             <option value="">Select Country</option>
-            <option value="India">India</option>
-            <option value="USA">USA</option>
-            <option value="UK">UK</option>
-            <option value="Australia">Australia</option>
-            <option value="Other">Other</option>
+            <option value="India">🇮🇳 India (+91)</option>
+            <option value="USA">🇺🇸 USA (+1)</option>
+            <option value="UK">🇬🇧 UK (+44)</option>
+            <option value="Australia">🇦🇺 Australia (+61)</option>
+            <option value="Canada">🇨🇦 Canada (+1)</option>
           </select>
 
           <label>Phone Number:</label>
-          <input type="text" name="phone" value={formData.phone} onChange={handleChange} required />
+          <input type="tel" name="phone" value={formData.phone} onChange={handleChange} required />
         </div>
       )}
 
