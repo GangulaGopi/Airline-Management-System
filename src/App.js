@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Dashboard from './Dashboard'; // Importing the Dashboard component
 import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
 import './App.css';
 import Home from './Home';
@@ -55,6 +56,7 @@ function App() {
             <Route path="/login" element={<Login setAuth={setIsAuthenticated} />} />
             <Route path="/signup" element={<SignUp setAuth={setIsAuthenticated} />} />
             <Route path="/profile" element={isAuthenticated ? <Profile /> : <Navigate to="/login" />} />
+          <Route path="/dashboard" element={<Dashboard />} /> {/* Adding route for Dashboard */}
           </Routes>
         </main>
 
